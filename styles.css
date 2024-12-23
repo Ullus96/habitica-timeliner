@@ -1,17 +1,115 @@
-body {
+:root {
+	--color-primary-050: rgb(190, 147, 184);
+	--color-primary-100: rgb(181, 125, 173);
+	--color-primary-200: rgb(172, 104, 163);
+	--color-primary-300: rgb(160, 84, 150);
+	--color-primary-400: rgb(142, 72, 133);
+	--color-primary-500: rgb(124, 60, 115);
+	--color-primary-600: rgb(105, 48, 97);
+	--color-primary-700: rgb(85, 37, 79);
+	--color-primary-800: rgb(65, 27, 60);
+	--color-primary-900: rgb(44, 17, 40);
+
+	--color-bg-050: rgb(56, 56, 56);
+	--color-bg-100: rgb(53, 53, 53);
+	--color-bg-200: rgb(51, 51, 51);
+	--color-bg-300: rgb(47, 47, 47);
+	--color-bg-400: rgb(44, 44, 44);
+	--color-bg-500: rgb(39, 39, 39);
+	--color-bg-600: rgb(37, 37, 37);
+	--color-bg-700: rgb(35, 35, 35);
+	--color-bg-800: rgb(30, 30, 30);
+	--color-bg-900: rgb(18, 18, 18);
+
+	--color-text-100: rgb(226, 226, 226);
+	--color-text-400: rgb(165, 165, 165);
+	--color-text-700: rgb(116, 116, 116);
+	--color-text-900: rgb(57, 57, 57);
+}
+
+/* ============ */
+/* Style resets */
+/* ============ */
+*,
+*::before,
+*::after {
 	margin: 0;
+	padding: 0;
+	box-sizing: inherit;
+}
+
+html {
+	font-size: 62.5%;
+}
+
+input,
+textarea,
+.btn {
+	text-decoration: none;
+	font-family: inherit;
+	font-size: inherit;
+	color: inherit;
+	background: transparent;
+	outline: none;
+	border: none;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus {
+	-webkit-text-fill-color: var(--color-text-100);
+	-webkit-box-shadow: 0 0 0px 40rem var(--color-bg-500) inset;
+}
+
+.btn {
+	cursor: pointer;
+}
+
+button {
+	padding: 0;
+	border: none;
+	font: inherit;
+	color: inherit;
+	background-color: transparent;
+	cursor: pointer;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+	margin: 0;
+	padding: 0;
+	font-size: inherit;
+}
+
+li {
+	list-style: none;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+	-webkit-appearance: none;
+	margin: 0;
+}
+
+svg {
+	display: block;
+}
+
+/* End of resets */
+/* ============= */
+
+body {
 	font-family: Arial, sans-serif;
+	background-color: var(--color-bg-500);
+	color: var(--color-text-100);
+	width: 500px;
 }
-#timeline-container {
-	width: 20%;
-	height: 100vh;
-	position: fixed;
-	right: 0;
-	top: 0;
-	background: #f7f7f7;
-	overflow-y: auto;
-	box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
-}
+
 .task {
 	padding: 10px;
 	border-bottom: 1px solid #ddd;

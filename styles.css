@@ -103,11 +103,38 @@ svg {
 /* End of resets */
 /* ============= */
 
+/* ============= */
+/* Scrollbar CSS */
+/* Firefox */
+* {
+	scrollbar-width: 15px;
+	scrollbar-color: var(--color-text-400) transparent;
+}
+
+/* Chrome, Edge, and Safari */
+*::-webkit-scrollbar {
+	width: 15px;
+}
+
+*::-webkit-scrollbar-track {
+	background: var(--color-bg-800);
+}
+
+*::-webkit-scrollbar-thumb {
+	background-color: var(--color-text-400);
+	border-radius: 10px;
+	border: 3px none var(--color-text-400);
+}
+
+/* End of scrollbar */
+/* ================ */
+
 body {
 	font-family: Arial, sans-serif;
-	background-color: var(--color-bg-500);
+	background-color: var(--color-bg-800);
 	color: var(--color-text-100);
-	width: 500px;
+	width: 480px;
+	height: 800px;
 }
 
 .task {

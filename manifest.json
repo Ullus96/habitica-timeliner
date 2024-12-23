@@ -1,0 +1,17 @@
+{
+	"manifest_version": 3,
+	"name": "Habitica Timeliner",
+	"version": "1.0",
+	"description": "Extension to visualize Daily tasks from Habitica on a timeline.",
+	"permissions": ["storage", "activeTab"],
+	"host_permissions": ["https://habitica.com/*"],
+	"action": {
+		"default_popup": "popup.html",
+		"default_icon": "icon.png"
+	},
+	"icons": {
+		"16": "icon16.png",
+		"48": "icon48.png",
+		"128": "icon128.png"
+	}
+}

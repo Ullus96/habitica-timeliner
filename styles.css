@@ -225,6 +225,30 @@ a {
 	margin-top: 3.2rem;
 }
 
+/* End of Form */
+/* =========== */
+
+/* ====== */
+/* Footer */
+.footer {
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	padding: 0.8rem 1.2rem;
+	background-color: var(--color-bg-900);
+}
+
+.footer__flex {
+	display: flex;
+	justify-content: space-between;
+}
+
+.footer__text {
+	font-size: 1.2rem;
+	color: var(--color-text-400);
+}
+
 .task {
 	padding: 10px;
 	border-bottom: 1px solid #ddd;

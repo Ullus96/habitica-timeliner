@@ -3,12 +3,46 @@
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Habitica Timeline</title>
+		<title>Habitica Timeliner</title>
 		<link rel="stylesheet" href="styles.css" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+			rel="stylesheet"
+		/>
 	</head>
 	<body>
 		<div class="container">
-			<h1>Habitica Timeline</h1>
+			<div id="credentials">
+				<form id="api-form" class="form__flex">
+					<label for="api-key"
+						><h1 class="title__header">Enter your Habitica API Token</h1></label
+					>
+					<input
+						type="text"
+						id="api-key"
+						name="api-key"
+						class="form__input"
+						placeholder="1234abcd-5678-31f2-a123-abcdef1234567"
+						required
+					/>
+					<div class="form__description">
+						<p class="form__description-element">
+							Your API will be stored in your browser locally
+						</p>
+						<p class="form__description-element">
+							Token can be found on
+							<a href="https://habitica.com/user/settings/siteData" class="link"
+								>User Icon > Settings > API</a
+							>
+						</p>
+					</div>
+					<button type="submit" class="btn btn-primary form__btn">
+						Сохранить
+					</button>
+				</form>
+			</div>
 			<div id="timeline-container"></div>
 		</div>
 		<script src="popup.js"></script>

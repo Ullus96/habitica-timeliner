@@ -18,6 +18,12 @@ document.getElementById('api-form').addEventListener('submit', (e) => {
 		chrome.storage.local.set({ habiticaApiKey: apiKey });
 		chrome.storage.local.set({ habiticaUserID: apiUserID });
 		setHeaders(apiUserID, apiKey);
+
+		habiticaApiKey = apiKey;
+		habiticaUserID = apiUserID;
+
+		timelineElement.innerText = `habiticaApiKey: ${habiticaApiKey}; habiticaUserID: ${habiticaUserID}`;
+		credentialsElement.style.display = 'none';
 	} else {
 		alert('Please fill in all fields');
 	}
@@ -55,6 +61,27 @@ function setHeaders(userID, apiKey) {
 	HEADERS['x-api-user'] = userID;
 	HEADERS['x-api-key'] = apiKey;
 }
+
+// Clear API keys from chrome storage
+const footerBtn = document.querySelector('.footer__btn');
+
+function clearUserCredentialsKeys() {
+	chrome.storage.local.remove(['habiticaApiKey', 'habiticaUserID'], () => {
+		if (chrome.runtime.lastError) {
+			console.error('Error removing keys:', chrome.runtime.lastError);
+		}
+	});
+}
+
+footerBtn.addEventListener('click', () => {
+	clearUserCredentialsKeys();
+	habiticaApiKey = '';
+	habiticaUserID = '';
+
+	timelineElement.innerText = `habiticaApiKey: ${habiticaApiKey}; habiticaUserID: ${habiticaUserID}`;
+
+	credentialsElement.style.display = 'block';
+});
 
 // const params = {
 //   'method' : 'POST',

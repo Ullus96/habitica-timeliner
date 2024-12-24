@@ -190,6 +190,24 @@ a {
 	color: var(--color-text-400);
 	background-color: var(--color-primary-200);
 }
+
+/* .btn-tertiary {
+	background-color: var(--color-primary-500);
+} */
+
+.btn-tertiary:hover {
+	background-color: var(--color-bg-300);
+}
+
+.btn-tertiary:focus-visible {
+	outline: 1px solid var(--color-text-700);
+	background-color: var(--color-bg-300);
+}
+
+.btn-tertiary:disabled {
+	color: var(--color-text-700);
+	background-color: var(--color-bg-200);
+}
 /* End of Buttons */
 /* ============== */
 
@@ -254,6 +272,13 @@ a {
 .footer__text {
 	font-size: 1.2rem;
 	color: var(--color-text-400);
+}
+
+.footer__btn {
+	padding: 0.8rem 1.2rem;
+	margin: -0.8rem -1.2rem -0.8rem 0;
+	color: var(--color-text-400);
+	font-size: 1.2rem;
 }
 
 .task {

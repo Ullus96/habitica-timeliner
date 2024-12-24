@@ -1,0 +1,5 @@
+{
+	"esversion": 8,
+	// disables line break error on ternary operators
+	"-W014": true
+}

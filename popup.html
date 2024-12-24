@@ -16,15 +16,25 @@
 		<div class="container">
 			<div id="credentials">
 				<form id="api-form" class="form__flex">
-					<label for="api-key"
-						><h1 class="title__header">Enter your Habitica API Token</h1></label
+					<label for="api-userID"
+						><h1 class="title__header">
+							Enter your Habitica UserID and API Token
+						</h1></label
 					>
+					<input
+						type="text"
+						id="api-userID"
+						name="api-userID"
+						class="form__input"
+						placeholder="UserID: 1234abcd-5678-31f2-a123-abcdef1234567"
+						required
+					/>
 					<input
 						type="text"
 						id="api-key"
 						name="api-key"
 						class="form__input"
-						placeholder="1234abcd-5678-31f2-a123-abcdef1234567"
+						placeholder="API Token: 1234abcd-5678-31f2-a123-abcdef1234567"
 						required
 					/>
 					<div class="form__description">
@@ -32,7 +42,7 @@
 							Your API will be stored in your browser locally
 						</p>
 						<p class="form__description-element">
-							Token can be found on
+							UserID and API Token can be found on
 							<a href="https://habitica.com/user/settings/siteData" class="link"
 								>User Icon > Settings > API</a
 							>

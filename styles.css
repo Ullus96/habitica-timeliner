@@ -213,6 +213,10 @@ a {
 	border: 1px solid var(--color-text-900);
 }
 
+.form__input:nth-child(3) {
+	margin-top: 1.2rem;
+}
+
 .form__description {
 	margin-top: 0.8rem;
 	display: flex;

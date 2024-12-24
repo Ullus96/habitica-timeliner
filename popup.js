@@ -1,4 +1,5 @@
 let habiticaApiKey = '';
+let habiticaUserID = '';
 const timelineElement = document.getElementById('timeline-container');
 const AUTHOR_ID = '6094f21d-7003-48f8-b926-fe379803d8f7';
 const SCRIPT_NAME = 'Habitica Timeliner';
@@ -9,13 +10,24 @@ const HEADERS = {
 
 document.getElementById('api-form').addEventListener('submit', (e) => {
 	e.preventDefault();
+	const apiUserID = document.getElementById('api-userID').value;
 	const apiKey = document.getElementById('api-key').value;
-	chrome.storage.local.set({ habiticaApiKey: apiKey });
+
+	if (apiUserID && apiKey) {
+		chrome.storage.local.set({ habiticaApiKey: apiKey });
+		chrome.storage.local.set({ habiticaUserID: apiUserID });
+		setHeaders(apiUserID, apiKey);
+	} else {
+		alert('Please fill in all fields');
+	}
 });
 
-chrome.storage.local.get(['habiticaApiKey'], (result) => {
+chrome.storage.local.get(['habiticaApiKey', 'habiticaUserID'], (result) => {
 	habiticaApiKey = result.habiticaApiKey;
-	timelineElement.innerText = habiticaApiKey;
+	habiticaUserID = result.habiticaUserID;
+	timelineElement.innerText = `habiticaApiKey: ${habiticaApiKey}; habiticaUserID: ${habiticaUserID}`;
+	setHeaders(habiticaUserID, habiticaApiKey);
+	console.log(HEADERS);
 });
 
 function setHeaders(userID, apiKey) {

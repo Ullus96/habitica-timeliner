@@ -208,12 +208,15 @@ a {
 .form__input {
 	color-scheme: dark;
 	padding: 1.2rem 1.6rem;
-	margin-top: 2.4rem;
 	border-radius: 1.2rem;
 	border: 1px solid var(--color-text-900);
 }
 
-.form__input:nth-child(3) {
+.form__label {
+	margin-top: 2.4rem;
+	color: var(--color-text-400);
+}
+.form__label:nth-child(3) {
 	margin-top: 1.2rem;
 }
 

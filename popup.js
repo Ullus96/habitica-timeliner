@@ -1,6 +1,7 @@
 let habiticaApiKey = '';
 let habiticaUserID = '';
 const timelineElement = document.getElementById('timeline-container');
+const credentialsElement = document.getElementById('credentials');
 const AUTHOR_ID = '6094f21d-7003-48f8-b926-fe379803d8f7';
 const SCRIPT_NAME = 'Habitica Timeliner';
 
@@ -22,12 +23,28 @@ document.getElementById('api-form').addEventListener('submit', (e) => {
 	}
 });
 
-chrome.storage.local.get(['habiticaApiKey', 'habiticaUserID'], (result) => {
+function getStorageData(keys) {
+	return new Promise((resolve) => {
+		chrome.storage.local.get(keys, resolve);
+	});
+}
+
+async function getDataOnFirstLoad() {
+	const result = await getStorageData(['habiticaApiKey', 'habiticaUserID']);
 	habiticaApiKey = result.habiticaApiKey;
 	habiticaUserID = result.habiticaUserID;
+
 	timelineElement.innerText = `habiticaApiKey: ${habiticaApiKey}; habiticaUserID: ${habiticaUserID}`;
 	setHeaders(habiticaUserID, habiticaApiKey);
-	console.log(HEADERS);
+
+	if (habiticaApiKey && habiticaUserID) {
+		credentialsElement.style.display = 'none';
+		console.log(`Hide Credentials`);
+	}
+}
+
+document.addEventListener('DOMContentLoaded', async () => {
+	await getDataOnFirstLoad();
 });
 
 function setHeaders(userID, apiKey) {

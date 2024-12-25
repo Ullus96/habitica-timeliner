@@ -158,6 +158,7 @@ function clearData(tasks) {
 function renderTimeline(data) {
 	const tasksByDay = {};
 
+	// группируем задачи по датам
 	data.forEach((task) => {
 		task.nextDue.forEach((isoDate) => {
 			const localDate = normalizeToLocalDate(isoDate);
@@ -165,27 +166,67 @@ function renderTimeline(data) {
 			if (!tasksByDay[localDate]) {
 				tasksByDay[localDate] = [];
 			}
-			tasksByDay[localDate].push(task.text);
+			tasksByDay[localDate].push(task);
 		});
 	});
 
+	// сортируем даты
 	const sortedDates = Object.keys(tasksByDay).sort((a, b) => {
 		return new Date(a) - new Date(b);
 	});
 
+	// рендерим данные
 	sortedDates.forEach((day) => {
-		const dayDiv = document.createElement('div');
-		dayDiv.innerHTML = `<h3>${day}</h3>`;
+		const dayDetails = document.createElement('details');
+		dayDetails.classList.add('tl__day');
+		dayDetails.setAttribute('open', '');
 
-		const tasksList = document.createElement('ul');
-		tasksByDay[day].forEach((task) => {
-			const taskItem = document.createElement('li');
-			taskItem.textContent = task;
-			tasksList.appendChild(taskItem);
-		});
+		const dayTasks = tasksByDay[day];
 
-		dayDiv.appendChild(tasksList);
-		timelineElement.appendChild(dayDiv);
+		// генерируем задачи
+		const tasksHTML = dayTasks
+			.map((task) => {
+				const repeatHTML = generateCalendar(task.repeat);
+				return `
+          <div class="tl__item">
+            <div class="tl__left-col">
+              <div class="tl__item-header">
+                <p class="tl__title">${task.text}</p>
+                <div class="tl__meta">
+                  <img src="./icon/star-four-points-outline.svg" alt="Task value" class="tl__meta-icon" />
+                  <p class="tl__value">${task.value}</p>
+                </div>
+                <div class="tl__meta">
+                  <img src="./icon/fast-forward.svg" alt="Streak amount" class="tl__meta-icon" />
+                  <p class="tl__value">${task.streak}</p>
+                </div>
+              </div>
+              <p class="tl__item-desc">${task.notes}</p>
+            </div>
+            <div class="tl__right-col">
+              ${repeatHTML}
+              <div class="tl__calendar-meta">
+                <p class="tl__frequency">${task.frequency}</p>
+                <div class="tl__each-amount">
+                  <img src="./icon/repeat-variant.svg" alt="Repeat every: " class="tl__frequency-img" />
+                  <p class="tl__frequency-interval">${task.everyX}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+			})
+			.join('');
+
+		dayDetails.innerHTML = `
+      <summary class="tl__header">
+        <div class="tl__circle"></div>
+        <h3 class="tl__date">${day.split('-').reverse().join('.')}</h3>
+      </summary>
+      ${tasksHTML}
+    `;
+
+		timelineElement.appendChild(dayDetails);
 	});
 }
 
@@ -194,6 +235,27 @@ function normalizeToLocalDate(isoDate) {
 	const offsetMinutes = date.getTimezoneOffset();
 	const localDate = new Date(date.getTime() - offsetMinutes * 60 * 1000);
 	return localDate.toISOString().split('T')[0];
+}
+
+function generateCalendar(repeat) {
+	const days = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
+	const repeatKeys = ['m', 't', 'w', 'th', 'f', 's', 'su'];
+
+	const hasActiveDays = repeatKeys.some((key) => repeat[key]);
+	if (!hasActiveDays) return '';
+
+	const calendarDays = days
+		.map((day, index) => {
+			const isActive = repeat[repeatKeys[index]] ? 'active' : '';
+			return `<p class="tl__calendar-day ${isActive}">${day}</p>`;
+		})
+		.join('');
+
+	return `
+    <div class="tl__calendar">
+      ${calendarDays}
+    </div>
+  `;
 }
 
 async function getMockData() {

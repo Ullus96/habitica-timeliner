@@ -48,8 +48,9 @@ async function getDataOnFirstLoad() {
 		credentialsElement.style.display = 'none';
 
 		const mockData = await getMockData();
-		const cleanedData = renderTimeline(mockData);
-		timelineElement.innerText = JSON.stringify(cleanedData);
+		const cleanedData = clearData(mockData);
+		timelineElement.innerText = '';
+		renderTimeline(cleanedData);
 		// console.log(mockData);
 	}
 }
@@ -124,22 +125,7 @@ async function getTasks() {
 // const getTasksBtn = document.getElementById('get-tasks');
 // getTasksBtn.addEventListener('click', getTasks);
 
-// // рендер таймлайна
-// function renderTimeline(tasks) {
-//   tasks.forEach((task) => {
-//     const taskEl = document.createElement('div');
-//     taskEl.className = `task ${task.completed ? 'completed' : ''}`;
-//     taskEl.textContent = `${task.text} (дата: ${task.date})`;
-//     timelineContainer.appendChild(taskEl);
-
-//     // возможность отметить задачу выполненной
-//     taskEl.addEventListener('click', () => {
-//       taskEl.classList.toggle('completed');
-//     });
-//   });
-// }
-
-function renderTimeline(tasks) {
+function clearData(tasks) {
 	const cleanedData = tasks.map((task) => {
 		const {
 			id,
@@ -166,8 +152,48 @@ function renderTimeline(tasks) {
 		};
 	});
 
-	console.log(cleanedData);
 	return cleanedData;
+}
+
+function renderTimeline(data) {
+	const tasksByDay = {};
+
+	data.forEach((task) => {
+		task.nextDue.forEach((isoDate) => {
+			const localDate = normalizeToLocalDate(isoDate);
+
+			if (!tasksByDay[localDate]) {
+				tasksByDay[localDate] = [];
+			}
+			tasksByDay[localDate].push(task.text);
+		});
+	});
+
+	const sortedDates = Object.keys(tasksByDay).sort((a, b) => {
+		return new Date(a) - new Date(b);
+	});
+
+	sortedDates.forEach((day) => {
+		const dayDiv = document.createElement('div');
+		dayDiv.innerHTML = `<h3>${day}</h3>`;
+
+		const tasksList = document.createElement('ul');
+		tasksByDay[day].forEach((task) => {
+			const taskItem = document.createElement('li');
+			taskItem.textContent = task;
+			tasksList.appendChild(taskItem);
+		});
+
+		dayDiv.appendChild(tasksList);
+		timelineElement.appendChild(dayDiv);
+	});
+}
+
+function normalizeToLocalDate(isoDate) {
+	const date = new Date(isoDate);
+	const offsetMinutes = date.getTimezoneOffset();
+	const localDate = new Date(date.getTime() - offsetMinutes * 60 * 1000);
+	return localDate.toISOString().split('T')[0];
 }
 
 async function getMockData() {

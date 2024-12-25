@@ -7,6 +7,7 @@ const SCRIPT_NAME = 'Habitica Timeliner';
 
 const HEADERS = {
 	'x-client': AUTHOR_ID + ' - ' + SCRIPT_NAME,
+	'Content-Type': 'application/json',
 };
 
 document.getElementById('api-form').addEventListener('submit', (e) => {
@@ -41,11 +42,10 @@ async function getDataOnFirstLoad() {
 	habiticaUserID = result.habiticaUserID;
 
 	timelineElement.innerText = `habiticaApiKey: ${habiticaApiKey}; habiticaUserID: ${habiticaUserID}`;
-	setHeaders(habiticaUserID, habiticaApiKey);
 
 	if (habiticaApiKey && habiticaUserID) {
+		setHeaders(habiticaUserID, habiticaApiKey);
 		credentialsElement.style.display = 'none';
-		console.log(`Hide Credentials`);
 	}
 }
 
@@ -78,27 +78,46 @@ footerBtn.addEventListener('click', () => {
 	habiticaApiKey = '';
 	habiticaUserID = '';
 
+	delete HEADERS['x-api-user'];
+	delete HEADERS['x-api-key'];
+
 	timelineElement.innerText = `habiticaApiKey: ${habiticaApiKey}; habiticaUserID: ${habiticaUserID}`;
 
 	credentialsElement.style.display = 'block';
 });
 
-// const params = {
-//   'method' : 'POST',
-//   'headers' : HEADERS,
-//   'contentType' : 'application/json',
-// };
+// Get tasks
+async function fetchTasks(taskType) {
+	const params = {
+		method: 'GET',
+		headers: HEADERS,
+	};
 
-// async function fetchTasks(apiKey) {
-//   const response = await fetch('https://habitica.com/api/v3/tasks/user', {
-//     headers: {
-//       'x-api-user': 'ВАШ_ЮЗЕР_ID',
-//       'x-api-key': apiKey,
-//     },
-//   });
-//   const data = await response.json();
-//   return data.data; // массив задач
-// }
+	const url = new URL('https://habitica.com/api/v3/tasks/user');
+	if (taskType) {
+		url.searchParams.append('type', taskType);
+	}
+
+	const response = await fetch(url, params);
+
+	if (!response.ok) {
+		throw new Error(
+			`Error occured while getting tasks: ${response.status} - ${response.statusText}`
+		);
+	}
+
+	const data = await response.json();
+	return data.data;
+}
+
+async function getTasks() {
+	const tasks = await fetchTasks('dailys');
+	console.log(tasks);
+	timelineElement.innerText = JSON.stringify(tasks);
+}
+
+// const getTasksBtn = document.getElementById('get-tasks');
+// getTasksBtn.addEventListener('click', getTasks);
 
 // // рендер таймлайна
 // function renderTimeline(tasks) {

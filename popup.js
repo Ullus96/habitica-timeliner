@@ -46,6 +46,11 @@ async function getDataOnFirstLoad() {
 	if (habiticaApiKey && habiticaUserID) {
 		setHeaders(habiticaUserID, habiticaApiKey);
 		credentialsElement.style.display = 'none';
+
+		const mockData = await getMockData();
+		const cleanedData = renderTimeline(mockData);
+		timelineElement.innerText = JSON.stringify(cleanedData);
+		// console.log(mockData);
 	}
 }
 
@@ -133,3 +138,47 @@ async function getTasks() {
 //     });
 //   });
 // }
+
+function renderTimeline(tasks) {
+	const cleanedData = tasks.map((task) => {
+		const {
+			id,
+			frequency,
+			everyX,
+			repeat,
+			nextDue,
+			streak,
+			text,
+			notes,
+			value,
+		} = task;
+
+		return {
+			id,
+			frequency,
+			everyX,
+			repeat,
+			nextDue,
+			streak,
+			text,
+			notes,
+			value,
+		};
+	});
+
+	console.log(cleanedData);
+	return cleanedData;
+}
+
+async function getMockData() {
+	let mockData = await new Promise((resolve) => {
+		setTimeout(() => {
+			resolve();
+			// start of resolve
+
+			// end of resolve
+		}, 850);
+	});
+
+	return mockData;
+}

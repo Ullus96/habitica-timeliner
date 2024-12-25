@@ -281,11 +281,147 @@ a {
 	font-size: 1.2rem;
 }
 
-.task {
-	padding: 10px;
-	border-bottom: 1px solid #ddd;
+/* ======== */
+/* Timeline */
+.tl__day {
+	margin-top: 1.6rem;
 }
-.task.completed {
-	text-decoration: line-through;
-	color: #aaa;
+.tl__day:first-child {
+	margin-top: 2rem;
+}
+
+details.tl__day {
+	line-height: 100%;
+}
+
+.tl__header {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	cursor: pointer;
+}
+
+.tl__circle {
+	width: 1.6rem;
+	height: 1.6rem;
+	border-radius: 100%;
+	background-color: transparent;
+	outline: 1px solid var(--color-text-400);
+	transition: outline 0.15s ease-in-out;
+}
+
+.tl__header:hover .tl__circle {
+	outline: 1px solid var(--color-text-100);
+}
+
+/* Single Item data */
+.tl__item {
+	margin-top: 1.2rem;
+	padding-left: 1.2rem;
+	padding-bottom: 0.8rem;
+	display: flex;
+	justify-content: space-between;
+}
+
+.tl__item:not(:last-child) {
+	border-bottom: 1px solid var(--color-text-900);
+}
+
+.tl__left-col {
+	flex: 1 1 auto;
+	display: flex;
+	flex-direction: column;
+	gap: 0.4rem;
+}
+
+.tl__item-header {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.8rem;
+}
+
+.tl__title {
+	font-weight: 500;
+}
+
+.tl__meta {
+	display: flex;
+	gap: 0.2rem;
+	align-items: center;
+}
+
+.tl__meta-icon {
+	display: block;
+	width: 16px;
+	aspect-ratio: 1 / 1;
+}
+
+.tl__meta:nth-of-type(2) {
+	gap: 0;
+}
+
+.tl__meta:nth-of-type(2) .tl__meta-icon {
+	transform: translateY(-1px);
+}
+
+.tl__value {
+	font-size: 1.4rem;
+	color: var(--color-text-400);
+}
+
+.tl__item-desc {
+	font-size: 1.4rem;
+	font-weight: 300;
+	color: var(--color-text-400);
+}
+
+.tl__right-col {
+	flex: 0 0 auto;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	gap: 0.4rem;
+}
+
+.tl__calendar {
+	display: flex;
+	gap: 0.4rem;
+}
+
+.tl__calendar-day {
+	color: var(--color-text-700);
+}
+
+.tl__calendar-day.active {
+	color: var(--color-primary-050);
+}
+
+.tl__calendar-meta {
+	display: flex;
+	justify-content: space-between;
+}
+
+.tl__frequency {
+	font-weight: 300;
+}
+
+.tl__right-col:not(:has(.tl__calendar)) .tl__calendar-meta {
+	gap: 1.2rem;
+}
+
+.tl__each-amount {
+	display: flex;
+	gap: 0.2rem;
+}
+
+.tl__frequency-img {
+	display: block;
+	width: 16px;
+	aspect-ratio: 1 / 1;
+	transform: translateY(-1px);
+}
+
+.tl__frequency-interval {
+	font-size: 1.4rem;
+	color: var(--color-text-700);
 }

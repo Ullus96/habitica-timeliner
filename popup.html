@@ -60,7 +60,68 @@
 
 			<!-- <button class="btn btn-primary" id="get-tasks">Get tasks</button> -->
 
-			<div id="timeline-container"></div>
+			<div id="timeline-container" style="display: none"></div>
+			<div id="timeline-containe">
+				<h1 class="tl__title">Here is your future dailies:</h1>
+				<!-- Single day -->
+				<details class="tl__day" open>
+					<summary class="tl__header">
+						<div class="tl__circle"></div>
+						<h3 class="tl__date">25.12</h3>
+					</summary>
+					<!-- Single item -->
+					<div class="tl__item">
+						<div class="tl__left-col">
+							<div class="tl__item-header">
+								<p class="tl__title">Clean a room</p>
+								<div class="tl__meta">
+									<img
+										src="./icon/star-four-points-outline.svg"
+										alt="Task value"
+										class="tl__meta-icon"
+									/>
+									<p class="tl__value">21.75</p>
+								</div>
+								<div class="tl__meta">
+									<img
+										src="./icon/fast-forward.svg"
+										alt="Streak amout"
+										class="tl__meta-icon"
+									/>
+									<p class="tl__value">12</p>
+								</div>
+							</div>
+							<p class="tl__item-desc">Капитальная на каждую первую среду</p>
+						</div>
+
+						<div class="tl__right-col">
+							<div class="tl__calendar">
+								<p class="tl__calendar-day">M</p>
+								<p class="tl__calendar-day active">T</p>
+								<p class="tl__calendar-day">W</p>
+								<p class="tl__calendar-day">T</p>
+								<p class="tl__calendar-day active">F</p>
+								<p class="tl__calendar-day active">S</p>
+								<p class="tl__calendar-day">S</p>
+							</div>
+
+							<div class="tl__calendar-meta">
+								<p class="tl__frequency">Weekly</p>
+								<div class="tl__each-amount">
+									<img
+										src="./icon/repeat-variant.svg"
+										alt="Repeat every: "
+										class="tl__frequency-img"
+									/>
+									<p class="tl__frequency-interval">4</p>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- End of single item -->
+				</details>
+				<!-- End of single day -->
+			</div>
 		</div>
 
 		<div class="footer">

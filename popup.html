@@ -14,7 +14,7 @@
 	</head>
 	<body>
 		<div class="container">
-			<div id="credentials">
+			<div id="credentials-container">
 				<form id="api-form" class="form__flex">
 					<h1 class="title__header">
 						Enter your Habitica UserID and API Token
@@ -60,7 +60,7 @@
 
 			<!-- <button class="btn btn-primary" id="get-tasks">Get tasks</button> -->
 
-			<div class="filters" style="display: none">
+			<div class="filters" id="filters">
 				<div class="filters__header">
 					<h2 class="filters__label">Filter tasks</h2>
 					<div class="filters__btns">
@@ -75,7 +75,7 @@
 				<div class="filters__options"></div>
 			</div>
 
-			<div id="timeline-container" style="display: none"></div>
+			<div id="timeline-container"></div>
 
 			<div id="error-container" class="error__container">
 				<h2 class="error__title">Oops, something’s not right!</h2>

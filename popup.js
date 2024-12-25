@@ -1,7 +1,17 @@
 let habiticaApiKey = '';
 let habiticaUserID = '';
+
+const credentialsElement = document.getElementById('credentials-container');
 const timelineElement = document.getElementById('timeline-container');
-const credentialsElement = document.getElementById('credentials');
+const filtersElement = document.getElementById('filters-container');
+const errorElement = document.getElementById('error-container');
+const elements = {
+	credentialsElement,
+	timelineElement,
+	filtersElement,
+	errorElement,
+};
+
 const AUTHOR_ID = '6094f21d-7003-48f8-b926-fe379803d8f7';
 const SCRIPT_NAME = 'Habitica Timeliner';
 
@@ -41,8 +51,6 @@ async function getDataOnFirstLoad() {
 	habiticaApiKey = result.habiticaApiKey;
 	habiticaUserID = result.habiticaUserID;
 
-	timelineElement.innerText = `habiticaApiKey: ${habiticaApiKey}; habiticaUserID: ${habiticaUserID}`;
-
 	if (habiticaApiKey && habiticaUserID) {
 		setHeaders(habiticaUserID, habiticaApiKey);
 		credentialsElement.style.display = 'none';
@@ -51,7 +59,6 @@ async function getDataOnFirstLoad() {
 		const cleanedData = clearData(mockData);
 		timelineElement.innerText = '';
 		renderTimeline(cleanedData);
-		// console.log(mockData);
 	}
 }
 
@@ -339,6 +346,39 @@ function addListenerToToggleFilters() {
 
 		handleFilterChange();
 	});
+}
+
+// Element visibility functions
+// error = flex; all else = block
+function elVisibilityOnFirstEverLoad() {
+	elements.credentialsElement.style.display = 'block';
+	elements.timelineElement.style.display = 'none';
+	elements.filtersElement.style.display = 'none';
+	elements.errorElement.style.display = 'none';
+}
+function elVisibilityOnRegularLoad() {
+	elements.credentialsElement.style.display = 'none';
+	elements.timelineElement.style.display = 'block';
+	elements.filtersElement.style.display = 'block';
+	elements.errorElement.style.display = 'none';
+}
+function elVisibilityOnApiEnter() {
+	elements.credentialsElement.style.display = 'none';
+	elements.timelineElement.style.display = 'block';
+	elements.filtersElement.style.display = 'block';
+	elements.errorElement.style.display = 'none';
+}
+function elVisibilityOnApiReset() {
+	elements.credentialsElement.style.display = 'block';
+	elements.timelineElement.style.display = 'none';
+	elements.filtersElement.style.display = 'none';
+	elements.errorElement.style.display = 'none';
+}
+function elVisibilityOnError() {
+	elements.credentialsElement.style.display = 'none';
+	elements.timelineElement.style.display = 'none';
+	elements.filtersElement.style.display = 'none';
+	elements.errorElement.style.display = 'flex';
 }
 
 async function getMockData() {

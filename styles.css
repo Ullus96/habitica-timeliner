@@ -169,6 +169,12 @@ a {
 	border-radius: 1.2rem;
 }
 
+.btn-sm {
+	padding: 0.8rem 1.2rem;
+	font-size: 1.4rem;
+	border-radius: 0.8rem;
+}
+
 .btn:disabled {
 	cursor: not-allowed;
 }
@@ -189,6 +195,24 @@ a {
 .btn-primary:disabled {
 	color: var(--color-text-400);
 	background-color: var(--color-primary-200);
+}
+
+.btn-secondary {
+	background-color: var(--color-bg-500);
+}
+
+.btn-secondary:hover {
+	background-color: var(--color-bg-400);
+}
+
+.btn-secondary:focus-visible {
+	outline: 1px solid var(--color-text-100);
+	background-color: var(--color-bg-300);
+}
+
+.btn-secondary:disabled {
+	color: var(--color-text-400);
+	background-color: var(--color-bg-200);
 }
 
 /* .btn-tertiary {
@@ -283,6 +307,10 @@ a {
 
 /* ======== */
 /* Timeline */
+#timeline-container {
+	margin-top: 2.4rem;
+}
+
 .tl__day {
 	margin-top: 1.6rem;
 	line-height: 100%;
@@ -453,4 +481,70 @@ a {
 .tl__frequency-interval {
 	font-size: 1.4rem;
 	color: var(--color-text-700);
+}
+
+/* ======= */
+/* Filters */
+.filters__header {
+	display: flex;
+	justify-content: space-between;
+	gap: 0.8rem;
+}
+
+.filters__checkbox {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	padding: 0.5rem 1rem;
+	border: 1px solid var(--color-text-700);
+	border-radius: 16px;
+	background-color: var(--color-bg-900);
+	color: var(--color-text-500);
+	font-size: 0.875rem;
+	line-height: 1.2;
+	cursor: pointer;
+	user-select: none;
+	transition: all 0.2s ease;
+	max-width: 24ch;
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 2;
+	line-clamp: 2;
+	overflow: hidden;
+}
+
+.filters__checkbox:hover {
+	border-color: var(--color-primary-200);
+	color: var(--color-primary-200);
+}
+
+.filters__checkbox:checked {
+	border-color: var(--color-primary-300);
+	color: var(--color-primary-300);
+}
+
+.filters__options {
+	max-height: 4rem; /* две строки чипов */
+	overflow: hidden;
+	position: relative;
+}
+
+.filters__options::after {
+	content: '';
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	height: 2rem;
+	background: linear-gradient(to bottom, rgba(0, 0, 0, 0), var(--color-bg-800));
+	pointer-events: none;
+	transition: all 0.3s ease;
+}
+
+.filters__options.expanded {
+	max-height: none;
+}
+
+.filters__options.expanded::after {
+	display: none;
 }

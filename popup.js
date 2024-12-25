@@ -156,9 +156,10 @@ function clearData(tasks) {
 }
 
 function renderTimeline(data) {
+	generateTimelineTitle();
 	const tasksByDay = {};
 
-	// группируем задачи по датам
+	// group tasks by day
 	data.forEach((task) => {
 		task.nextDue.forEach((isoDate) => {
 			const localDate = normalizeToLocalDate(isoDate);
@@ -170,12 +171,12 @@ function renderTimeline(data) {
 		});
 	});
 
-	// сортируем даты
+	// sort dates
 	const sortedDates = Object.keys(tasksByDay).sort((a, b) => {
 		return new Date(a) - new Date(b);
 	});
 
-	// рендерим данные
+	// render timeline
 	sortedDates.forEach((day) => {
 		const dayDetails = document.createElement('details');
 		dayDetails.classList.add('tl__day');
@@ -183,18 +184,18 @@ function renderTimeline(data) {
 
 		const dayTasks = tasksByDay[day];
 
-		// генерируем задачи
+		// generate tasks
 		const tasksHTML = dayTasks
 			.map((task) => {
 				const repeatHTML = generateCalendar(task.repeat);
 				return `
-          <div class="tl__item">
+          <div class="tl__item" data-id="${task.id}">
             <div class="tl__left-col">
               <div class="tl__item-header">
                 <p class="tl__title">${task.text}</p>
                 <div class="tl__meta">
                   <img src="./icon/star-four-points-outline.svg" alt="Task value" class="tl__meta-icon" />
-                  <p class="tl__value">${task.value}</p>
+                  <p class="tl__value">${task.value.toFixed(2)}</p>
                 </div>
                 <div class="tl__meta">
                   <img src="./icon/fast-forward.svg" alt="Streak amount" class="tl__meta-icon" />
@@ -221,13 +222,21 @@ function renderTimeline(data) {
 		dayDetails.innerHTML = `
       <summary class="tl__header">
         <div class="tl__circle"></div>
-        <h3 class="tl__date">${day.split('-').reverse().join('.')}</h3>
+        <h3 class="tl__date">${day
+					.split('-')
+					.splice(1, 2)
+					.reverse()
+					.join('.')}</h3>
       </summary>
       ${tasksHTML}
     `;
 
 		timelineElement.appendChild(dayDetails);
 	});
+
+	setupFilters(data);
+	addListenerToShowAllFilters();
+	addListenerToToggleFilters();
 }
 
 function normalizeToLocalDate(isoDate) {
@@ -256,6 +265,80 @@ function generateCalendar(repeat) {
       ${calendarDays}
     </div>
   `;
+}
+
+function generateTimelineTitle() {
+	const title = document.createElement('h2');
+	title.classList.add('tl__title');
+	title.innerText = 'Here is your future dailies:';
+	timelineElement.appendChild(title);
+}
+
+// Filters
+function setupFilters(tasks) {
+	const filtersContainer = document.querySelector('.filters__options');
+	const uniqueTasks = [
+		...new Set(tasks.map((task) => ({ id: task.id, text: task.text }))),
+	];
+
+	uniqueTasks.forEach((task) => {
+		const filterOption = document.createElement('label');
+		filterOption.classList.add('filters__option');
+		filterOption.innerHTML = `
+      <input type="checkbox" class="filters__checkbox" data-id="${task.id}" checked />
+      <span>${task.text}</span>
+    `;
+		filtersContainer.appendChild(filterOption);
+	});
+
+	filtersContainer.addEventListener('change', handleFilterChange);
+}
+
+function handleFilterChange() {
+	const checkboxes = document.querySelectorAll('.filters__checkbox');
+	const selectedIds = Array.from(checkboxes)
+		.filter((checkbox) => checkbox.checked)
+		.map((checkbox) => checkbox.getAttribute('data-id'));
+
+	const tasks = document.querySelectorAll('.tl__item');
+	tasks.forEach((task) => {
+		const taskId = task.getAttribute('data-id');
+		task.style.display = selectedIds.includes(taskId) ? 'flex' : 'none';
+	});
+
+	const days = document.querySelectorAll('.tl__day');
+	days.forEach((day) => {
+		const visibleItems = day.querySelectorAll(
+			'.tl__item:not([style*="display: none"])'
+		);
+		day.style.display = visibleItems.length > 0 ? 'block' : 'none';
+	});
+}
+
+function addListenerToShowAllFilters() {
+	document.querySelector('#show-filters').addEventListener('click', () => {
+		const options = document.querySelector('.filters__options');
+		options.classList.toggle('expanded');
+		const isExpanded = options.classList.contains('expanded');
+		document.querySelector('#show-filters').textContent = isExpanded
+			? 'Hide all'
+			: 'Show all';
+	});
+}
+
+function addListenerToToggleFilters() {
+	let currentlyAllChecked = true;
+	document.querySelector('#toggle-filters').addEventListener('click', () => {
+		const checkboxes = document.querySelectorAll('.filters__checkbox');
+
+		currentlyAllChecked = !currentlyAllChecked;
+
+		checkboxes.forEach((checkbox) => {
+			checkbox.checked = currentlyAllChecked;
+		});
+
+		handleFilterChange();
+	});
 }
 
 async function getMockData() {

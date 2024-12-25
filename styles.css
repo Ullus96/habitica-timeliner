@@ -491,42 +491,59 @@ a {
 	gap: 0.8rem;
 }
 
-.filters__checkbox {
-	display: inline-flex;
+/* 
+label.filters__option
+> input.filters__checkbox
++ span
+*/
+
+.filters__option {
+	display: flex;
 	align-items: center;
 	justify-content: center;
-	padding: 0.5rem 1rem;
-	border: 1px solid var(--color-text-700);
-	border-radius: 16px;
-	background-color: var(--color-bg-900);
-	color: var(--color-text-500);
-	font-size: 0.875rem;
-	line-height: 1.2;
+	position: relative;
 	cursor: pointer;
+	padding: 0.4rem 0.8rem;
+	border-radius: 0.8rem;
+	font-size: 1.4rem;
 	user-select: none;
-	transition: all 0.2s ease;
-	max-width: 24ch;
-	display: -webkit-box;
-	-webkit-box-orient: vertical;
-	-webkit-line-clamp: 2;
-	line-clamp: 2;
-	overflow: hidden;
+
+	transition: 0.15s ease-in-out border, 0.15s ease-in-out color,
+		0.15s ease-in-out background-color;
+	background-color: transparent;
+	color: var(--color-text-400);
 }
 
-.filters__checkbox:hover {
-	border-color: var(--color-primary-200);
-	color: var(--color-primary-200);
+.filters__option:hover {
+	background-color: var(--color-text-900);
+	color: var(--color-text-100);
 }
 
-.filters__checkbox:checked {
-	border-color: var(--color-primary-300);
-	color: var(--color-primary-300);
+.filters__option:has(.filters__checkbox:checked) {
+	color: var(--color-text-100);
+	background-color: var(--color-text-900);
+}
+
+.filters__option:has(.filters__checkbox:checked):hover {
+	color: var(--color-text-100);
+	background-color: var(--color-text-700);
+}
+
+.filters__checkbox {
+	position: absolute;
+	opacity: 0;
+	width: 0;
+	height: 0;
 }
 
 .filters__options {
-	max-height: 4rem; /* две строки чипов */
+	max-height: calc((3rem + 0.8rem) * 2);
 	overflow: hidden;
 	position: relative;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.8rem;
+	margin-top: 1.6rem;
 }
 
 .filters__options::after {

@@ -269,8 +269,8 @@ function generateCalendar(repeat) {
 
 function generateTimelineTitle() {
 	const title = document.createElement('h2');
-	title.classList.add('tl__title');
-	title.innerText = 'Here is your future dailies:';
+	title.classList.add('tl__day-title');
+	title.innerText = 'Your timeline';
 	timelineElement.appendChild(title);
 }
 

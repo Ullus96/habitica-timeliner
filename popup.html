@@ -60,7 +60,7 @@
 
 			<!-- <button class="btn btn-primary" id="get-tasks">Get tasks</button> -->
 
-			<div class="filters">
+			<div class="filters" style="display: none">
 				<div class="filters__header">
 					<h2 class="filters__label">Filter tasks</h2>
 					<div class="filters__btns">
@@ -75,7 +75,16 @@
 				<div class="filters__options"></div>
 			</div>
 
-			<div id="timeline-container"></div>
+			<div id="timeline-container" style="display: none"></div>
+
+			<div id="error-container" class="error__container">
+				<h2 class="error__title">Oops, something’s not right!</h2>
+				<p class="error__message">
+					It looks like something went wrong. If this keeps happening,
+					double-check your UserID and API Token and update them using the
+					button below.
+				</p>
+			</div>
 		</div>
 
 		<div class="footer">

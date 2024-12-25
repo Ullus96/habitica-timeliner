@@ -491,12 +491,6 @@ a {
 	gap: 0.8rem;
 }
 
-/* 
-label.filters__option
-> input.filters__checkbox
-+ span
-*/
-
 .filters__option {
 	display: flex;
 	align-items: center;
@@ -564,4 +558,19 @@ label.filters__option
 
 .filters__options.expanded::after {
 	display: none;
+}
+
+/* =============== */
+/* Error container */
+
+.error__container {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 1.6rem;
+	margin-top: 2.4rem;
+}
+
+.error__message {
+	text-align: center;
 }

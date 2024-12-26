@@ -5,11 +5,13 @@ const credentialsElement = document.getElementById('credentials-container');
 const timelineElement = document.getElementById('timeline-container');
 const filtersElement = document.getElementById('filters-container');
 const errorElement = document.getElementById('error-container');
+const loadingElement = document.getElementById('loading-container');
 const elements = {
 	credentialsElement,
 	timelineElement,
 	filtersElement,
 	errorElement,
+	loadingElement,
 };
 
 const AUTHOR_ID = '6094f21d-7003-48f8-b926-fe379803d8f7';
@@ -33,8 +35,8 @@ document.getElementById('api-form').addEventListener('submit', (e) => {
 		habiticaApiKey = apiKey;
 		habiticaUserID = apiUserID;
 
-		timelineElement.innerText = `habiticaApiKey: ${habiticaApiKey}; habiticaUserID: ${habiticaUserID}`;
-		credentialsElement.style.display = 'none';
+		elVisibilityOnApiEnter();
+		startRenderingTimeline();
 	} else {
 		alert('Please fill in all fields');
 	}
@@ -52,19 +54,35 @@ async function getDataOnFirstLoad() {
 	habiticaUserID = result.habiticaUserID;
 
 	if (habiticaApiKey && habiticaUserID) {
-		setHeaders(habiticaUserID, habiticaApiKey);
-		credentialsElement.style.display = 'none';
-
-		const mockData = await getMockData();
-		const cleanedData = clearData(mockData);
-		timelineElement.innerText = '';
-		renderTimeline(cleanedData);
+		startRenderingTimeline();
+		return true;
+	} else {
+		return false;
 	}
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
-	await getDataOnFirstLoad();
+	elVisibilityOnLoading();
+
+	const result = await getStorageData(['habiticaApiKey', 'habiticaUserID']);
+	if (result.habiticaApiKey && result.habiticaUserID) {
+		await getDataOnFirstLoad();
+		elVisibilityOnRegularLoad();
+	} else {
+		elVisibilityOnFirstEverLoad();
+	}
 });
+
+async function startRenderingTimeline() {
+	setHeaders(habiticaUserID, habiticaApiKey);
+	credentialsElement.style.display = 'none';
+
+	const tasksData = await getTasks();
+	const cleanedData = clearData(tasksData);
+	console.log(cleanedData);
+	timelineElement.innerText = '';
+	renderTimeline(cleanedData);
+}
 
 function setHeaders(userID, apiKey) {
 	if (!userID || !apiKey) {
@@ -83,6 +101,7 @@ function clearUserCredentialsKeys() {
 		if (chrome.runtime.lastError) {
 			console.error('Error removing keys:', chrome.runtime.lastError);
 		}
+		elVisibilityOnApiReset();
 	});
 }
 
@@ -124,13 +143,14 @@ async function fetchTasks(taskType) {
 }
 
 async function getTasks() {
-	const tasks = await fetchTasks('dailys');
-	console.log(tasks);
-	timelineElement.innerText = JSON.stringify(tasks);
+	try {
+		const tasks = await fetchTasks('dailys');
+		return tasks;
+	} catch (error) {
+		elVisibilityOnError();
+		console.log(error);
+	}
 }
-
-// const getTasksBtn = document.getElementById('get-tasks');
-// getTasksBtn.addEventListener('click', getTasks);
 
 function clearData(tasks) {
 	const cleanedData = tasks.map((task) => {
@@ -194,7 +214,11 @@ function renderTimeline(data) {
 		// generate tasks
 		const tasksHTML = dayTasks
 			.map((task) => {
-				const repeatHTML = generateCalendar(task.repeat);
+				const repeatHTML = generateCalendar(
+					task.repeat,
+					task.frequency,
+					task.everyX
+				);
 				return `
           <div class="tl__item" data-id="${task.id}">
             <div class="tl__left-col">
@@ -253,7 +277,9 @@ function normalizeToLocalDate(isoDate) {
 	return localDate.toISOString().split('T')[0];
 }
 
-function generateCalendar(repeat) {
+function generateCalendar(repeat, frequency, everyX) {
+	if (frequency === 'daily' && everyX !== 1) return '';
+
 	const days = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
 	const repeatKeys = ['m', 't', 'w', 'th', 'f', 's', 'su'];
 
@@ -355,41 +381,44 @@ function elVisibilityOnFirstEverLoad() {
 	elements.timelineElement.style.display = 'none';
 	elements.filtersElement.style.display = 'none';
 	elements.errorElement.style.display = 'none';
+	elements.loadingElement.style.display = 'none';
+	console.log('first ever load');
+	console.log(elements);
 }
 function elVisibilityOnRegularLoad() {
 	elements.credentialsElement.style.display = 'none';
 	elements.timelineElement.style.display = 'block';
 	elements.filtersElement.style.display = 'block';
 	elements.errorElement.style.display = 'none';
+	elements.loadingElement.style.display = 'none';
+	console.log('regular load');
+	console.log(elements);
 }
 function elVisibilityOnApiEnter() {
 	elements.credentialsElement.style.display = 'none';
 	elements.timelineElement.style.display = 'block';
 	elements.filtersElement.style.display = 'block';
 	elements.errorElement.style.display = 'none';
+	elements.loadingElement.style.display = 'none';
 }
 function elVisibilityOnApiReset() {
 	elements.credentialsElement.style.display = 'block';
 	elements.timelineElement.style.display = 'none';
 	elements.filtersElement.style.display = 'none';
 	elements.errorElement.style.display = 'none';
+	elements.loadingElement.style.display = 'none';
 }
 function elVisibilityOnError() {
 	elements.credentialsElement.style.display = 'none';
 	elements.timelineElement.style.display = 'none';
 	elements.filtersElement.style.display = 'none';
 	elements.errorElement.style.display = 'flex';
+	elements.loadingElement.style.display = 'none';
 }
-
-async function getMockData() {
-	let mockData = await new Promise((resolve) => {
-		setTimeout(() => {
-			resolve();
-			// start of resolve
-
-			// end of resolve
-		}, 850);
-	});
-
-	return mockData;
+function elVisibilityOnLoading() {
+	elements.credentialsElement.style.display = 'none';
+	elements.timelineElement.style.display = 'none';
+	elements.filtersElement.style.display = 'none';
+	elements.errorElement.style.display = 'none';
+	elements.loadingElement.style.display = 'flex';
 }

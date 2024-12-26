@@ -30,6 +30,6 @@ The **Habitica Timeliner** is a tool designed to help you visualize and manage y
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/your-repo/task-timeline-viewer.git
+   git clone https://github.com/Ullus96/habitica-timeliner.git
    ```
 2. Follow [Google Chrome's instructions](https://developer.chrome.com/docs/extensions/get-started/tutorial/hello-world#load-unpacked) to load the extension as "unpacked".

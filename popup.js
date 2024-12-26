@@ -79,7 +79,6 @@ async function startRenderingTimeline() {
 
 	const tasksData = await getTasks();
 	const cleanedData = clearData(tasksData);
-	console.log(cleanedData);
 	timelineElement.innerText = '';
 	renderTimeline(cleanedData);
 }
@@ -382,8 +381,6 @@ function elVisibilityOnFirstEverLoad() {
 	elements.filtersElement.style.display = 'none';
 	elements.errorElement.style.display = 'none';
 	elements.loadingElement.style.display = 'none';
-	console.log('first ever load');
-	console.log(elements);
 }
 function elVisibilityOnRegularLoad() {
 	elements.credentialsElement.style.display = 'none';
@@ -391,8 +388,6 @@ function elVisibilityOnRegularLoad() {
 	elements.filtersElement.style.display = 'block';
 	elements.errorElement.style.display = 'none';
 	elements.loadingElement.style.display = 'none';
-	console.log('regular load');
-	console.log(elements);
 }
 function elVisibilityOnApiEnter() {
 	elements.credentialsElement.style.display = 'none';
